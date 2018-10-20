@@ -33,8 +33,6 @@ button, strong {
     width: 40%;
 
     background-color: #3F51B5; /* temporary background color to see the effect, is completely hidden now */
-    z-index: +1; /* to raise the order to same as channels view to as to see shadow  */
-
 }
 
 #chat {
@@ -51,17 +49,6 @@ button, strong {
     bottom: 72px;
     overflow-y: auto;
 }
-
-/* #9 attempt to add red box beside message - failed  */
-#messages div::before {
-    content: "";
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    background-color: red;
-    
-   
-} 
 
 /* APP BAR */
 
@@ -83,9 +70,8 @@ h1 {
 }
 
 h1#left-app-bar {
-    padding-left: 72px;  
-    z-index: +1;
-    }
+    padding-left: 72px;
+}
 
 h1#left-app-bar img {
     position: absolute;
@@ -113,7 +99,7 @@ ul {
     position: absolute;
     width: 100%;
     top: 64px; /* the app bar's height */
-    bottom:72px; /* the tab bar's height */
+    bottom: 72px; /* the tab bar's height */
     overflow-y: auto; /* this adds scroll bars on demand */
 }
 
@@ -159,7 +145,7 @@ li i.fas, li i.far  {
 
 
 li.selected {
-    color: c;
+    color: #3F51B5;
     border-left: 4px solid #3F51B5;
 }
 
@@ -172,10 +158,9 @@ li.selected {
     bottom: 0;
     width: 100%;
     display: flex;
-  
 }
 
-#tab-bar button {
+#tab-bar button, #chat-bar button {
     background-color: white;
     border: none;
     font-size: 13px;
@@ -199,25 +184,6 @@ li.selected {
     margin: 0 auto 4px auto;
 }
 
-/* #9 add FAB */
-#dot {
-    content: "";
-    height: 56px;  /* size of FAB button   */
-    width:56px;
-    position: absolute;
-    bottom: 88px; /* position 16 px above tab bar (72 + 16)= 88  */
-    right: 16px;  /* position 16px from right   */
-    border-radius: 50%;
-    background-color: #CDDC39; /* accent color  */
-    color: black;
-    font-size: 24px;   /* size of "+"sign   */
-    text-align: center;
-    line-height: 2.3;
-    box-shadow: 0px 3px 10px grey;  /* add shadow */
-    
-    
-  }
-
 /* CHAT BAR */
 
 #chat-bar button {
@@ -233,7 +199,7 @@ li.selected {
     /* emoji menu */
     /* colors and borders */
     background-color:white;
-    /* border: 1px solid black; */
+    border: 1px solid black;
 
     /* size & alignment */
     position: absolute;
@@ -271,7 +237,6 @@ li.selected {
     margin-bottom: 8px;
     margin-left: 2.5%;
     position: relative;
-  
 }
 
 .message h3 {
@@ -307,46 +272,16 @@ li.selected {
 
 .message button {
     /* +5 min. button*/
+    background-color: #CDDC39;
+    color: black;
     text-transform: uppercase;
 
     /* right/bottom alignment of button */
     position: absolute;
-    right: 2px;
-    bottom: 2px;
+    right: 8px;
+    bottom: 8px;
 }
 
 .message.own {
     margin-left: 17.5%;
 }
-
-/* primary button style */
-.primary {
-    background-color: #3F51B5;
-    color: white;
-    /* min-width: 64px; */
-    margin: 8px;
-    padding: 7px 16px;
-    border-radius: 5px;
-}
-
-.accent {
-    background-color: #CDDC39;
-    color: black;
-    min-width: 64px;
-    margin: 8px;
-    padding: 7px 16px;
-    border-radius: 5px;
-}
-
-/* shadow style for app bar, tab bar, emoji menu,etc courtesy from Scott Roa */
-.md-whiteframe-2dp {
-    box-shadow:  0px 1px 5px 0px rgba(0, 0, 0, 0.2),
-    0px 2px 2px 0px rgba(0, 0, 0, 0.14),
-    0px 3px 1px -2px rgba(0, 0, 0, 0.12); }
-
-.md-whiteframe-24dp {
-    box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2),
-    0px 24px 38px 3px rgba(0, 0, 0, 0.14),
-    0px 9px 46px 8px rgba(0, 0, 0, 0.12); }
-
-

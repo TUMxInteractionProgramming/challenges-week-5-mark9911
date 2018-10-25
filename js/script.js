@@ -1,10 +1,11 @@
 /* start the external action and say hello */
 console.log("App is alive");
 
+/* #10 create global array for channels array  */
+var channels = [yummy, sevencontinents, killerapp, firstpersononmars, octoberfest];
 
 /** #7 Create global variable */
 var currentChannel;
-
 /** #7 We simply initialize it with the channel selected by default - sevencontinents */
 currentChannel = sevencontinents;
 
@@ -48,6 +49,7 @@ function switchChannel(channelObject) {
 
     /* #7 store selected channel in global variable */
     currentChannel = channelObject;
+    
 }
 
 /* liking a channel on #click */
@@ -73,13 +75,21 @@ function selectTab(tabId) {
     $('#tab-bar button').removeClass('selected');
     console.log('Changing to tab', tabId);
     $(tabId).addClass('selected');
+    /* #10 - list channels according to selected tab button  */
+    listChannels(tabId);
+  
 }
 
 /**
  * toggle (show/hide) the emojis menu
  */
 function toggleEmojis() {
+    var emojis = require('emojis-list'); // #10 load emoji list
     $('#emojis').toggle(); // #toggle
+    /* list out emojis */
+    for (var i=0; i < emojis.length; i++){
+        $('#emojis').append(emojis[i]);
+    }
 }
 
 /**
@@ -107,8 +117,14 @@ function sendMessage() {
 
     // #8 let's now use the real message #input
     var message = new Message($('#message').val());
-    console.log("New message:", message);
+    //console.log("New message:", message.text.length);
 
+    /* #10 check input messsage is empty or not   */
+    if (message.text.length==0) {
+        alert('Please key in msg before press send button');
+    }
+    else {
+       
     // #8 convenient message append with jQuery:
     $('#messages').append(createMessageElement(message));
 
@@ -118,6 +134,56 @@ function sendMessage() {
 
     // #8 clear the message input
     $('#message').val('');
+
+    /* #10 - push message to currentChannel in channel.js   */
+    currentChannel.messages.push(message);
+    currentChannel.messageCount++;
+    }
+}
+
+/**
+ * #10 This #constructor function creates a new channel #message.
+ * @param text `String` a channel name text
+ * @constructor
+ */
+function Channel (text) {
+    this.name = '#'+text;
+    this.createdOn = new Date();
+    this.createdBy = currentLocation.what3words;
+    this.starred = false;
+    this.expiresIn = new Date(Date.now() + 15 * 60 * 1000); // mins * secs * msecs
+    this.messageCount = 0;
+    this.messages = [];
+}
+
+
+/* #10 function to create new Channel  */
+function createChannel() {
+    // #10 Create a new channel and send it to channel.js and message to#messages  */
+    
+    // #10 let's now use the real message #input
+    var newChannel = new Channel($('#newChannelName').val());
+    console.log("New message:", newChannel.name.length);
+
+    /* #10 check input messsage is empty or not   */
+    if (newChannel.name.length==1) {
+        alert('Please key in channel name before press Create button');
+    }
+    else {
+       
+    // #10 clear the new channel  input
+    $('#newChannelName').val('');
+
+    // #10 update current channel name  
+    currentChannel = newChannel;
+    }
+}
+
+/* #10 function to combine 3 functions when pressing CREATE button "*/
+function create() {
+    createChannel();
+    sendMessage();
+    restoreMessageBox()
 }
 
 /**
@@ -145,16 +211,42 @@ function createMessageElement(messageObject) {
 }
 
 
-function listChannels() {
+function listChannels(tabId) {
     // #8 channel onload
     //$('#channels ul').append("<li>New Channel</li>")
 
     // #8 five new channels
-    $('#channels ul').append(createChannelElement(yummy));
+    /*$('#channels ul').append(createChannelElement(yummy));
     $('#channels ul').append(createChannelElement(sevencontinents));
     $('#channels ul').append(createChannelElement(killerapp));
     $('#channels ul').append(createChannelElement(firstpersononmars));
-    $('#channels ul').append(createChannelElement(octoberfest));
+    $('#channels ul').append(createChannelElement(octoberfest));*/
+
+    $('#channels ul').empty();  // #10 delete channels contents initially to prevent duplicate */
+    /* #10 add condition to determine which criterion for channel sorting to use  */
+    if (tabId == '#tab-new') {
+        channels.sort(compareDate);
+        //console.log('channels-new :', channels);
+        }
+    else if (tabId == '#tab-trending') {
+        channels.sort(compareMessage);
+        //console.log('channels-trending :', channels);
+        }
+    else {
+        channels.sort(compareStarred);
+        //console.log('channels-starred :', channels);
+    }
+    
+    
+    //  #9 for loop to list channels   
+    for (var i=0; i < channels.length; i++) {
+        //console.log ('list channel', channels[i]);
+        $('#channels ul').append(createChannelElement(channels[i]));
+    }
+
+
+
+
 }
 
 /**
@@ -174,8 +266,10 @@ function createChannelElement(channelObject) {
      */
 
     // create a channel
-    var channel = $('<li>').text(channelObject.name);
 
+    //#10 add switch channel to channel list  */
+        var channel = $('<li>').text(channelObject.name).attr('onClick','restoreMessageBox()');
+    
     // create and append channel meta
     var meta = $('<span>').addClass('channel-meta').appendTo(channel);
 
@@ -193,3 +287,55 @@ function createChannelElement(channelObject) {
     // return the complete channel
     return channel;
 }
+
+/* #10 function to compare date  */
+ function compareDate (a, b)  {
+    if (a.createdOn < b.createdOn) {
+      return 1;  //newest on top
+    }
+    else {
+      return -1;
+    }
+  }
+
+ /* #10 function to compare numnber of Messages  */
+ function compareMessage (a, b) {
+    if (a.messageCount < b.messageCount) {
+        return 1;  //most messages on top
+      }
+    else {
+        return -1;
+      }
+ }
+
+/* #10 function to compare starred or unstarred channels   */
+function compareStarred (a, b) {
+    if (a.starred < b.starred) {
+        return 1;
+      }
+    else {
+        return -1;
+      }
+}
+
+/* #10 function to create new channel when FAB is pressed  */ 
+function createNewChannel() {
+    $("#messages").empty();
+    $("#chat h1").empty();
+    $("#arrow-button").html('CREATE');
+    input = jQuery('<input type="text" placeholder="Enter a ChannelName..." maxlength="140" id="newChannelName">'); 
+    $("#chat h1").append(input);
+    $("<button>").text('X ABORT').addClass('primary2').appendTo("#chat h1").attr('onClick','restoreMessageBox()');
+    $("#arrow-button").attr("onclick","create()");
+} 
+
+/* #10 restore channel to chat box  */
+function restoreMessageBox()  {
+    $("#chat h1").empty();
+    $("#arrow-button").html('<i class="fas fa-arrow-right"></i>');
+    $('<span>').attr('id', 'channel-name').text(currentChannel.name).appendTo("#chat h1");
+    $('<small>').attr('id', 'channel-location').text(' by ').appendTo("#chat h1");
+    $('<strong>').text(currentChannel.createdBy).appendTo('#channel-location');
+    $('<i>').addClass(currentChannel.starred ? 'fas' : 'far').addClass("fa-star").attr('onClick','star()').appendTo("#chat h1");
+}
+

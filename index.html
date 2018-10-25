@@ -25,10 +25,14 @@
     <!-- embed external JavaScript file for app interaction -->
     <script src="js/script.js"></script>
 
+    <!--#10 add emoji full list -->
+    <script src="js/emojis-list.js" type="text/javascript" charset="utf-8"></script>
+
 </head>
 
 <!-- #8 #channel #onload all channels when the body has loaded -->
-<body onload="listChannels()">
+<!-- #10- initialize listChannels with New tab -->
+<body onload="listChannels('#tab-new')">
 
 <!-- channel area -->
 <div id="channels" class="md-whiteframe-24dp">
@@ -111,8 +115,9 @@
             Favorites
         </button>
     </div>
-    <!-- add FAB -->
-    <span id="dot"  ><strong>+</strong></span>
+    <!-- #9add FAB -->
+    <!--#10 - call new function-->
+    <span id="dot" onclick="createNewChannel()" ><strong>+</strong></span>
 </div>
 
 <div id="chat">
@@ -127,7 +132,7 @@
 
     <div id="messages">
 
-        <div class="message own">
+    <!--   <div class="message own">
             <h3><a href="http://w3w.co/cheeses.yard.applies" target="_blank"><strong>cheeses.yard.applies</strong></a>
                 Wed, June 20th, 13:37 <em>15 min. left</em></h3>
             <p>What's the place you folks call home?</p>
@@ -162,7 +167,7 @@
                 Wed, June 20th, 14:07 <em>14 min. left</em></h3>
             <p>Greetings from the western cape!</p>
             <button class="accent">+5 min.</button>
-        </div>
+        </div> -->
 
         <div class="message">
             <h3><a href="http://w3w.co/meanings.identity.pays"
@@ -170,7 +175,7 @@
                 Wed, June 20th, 04:08 <em>15 min. left</em></h3>
             <p>北京</p>
             <button class="accent">+5 min.</button>
-        </div>
+        </div>   
 
     </div>
 
@@ -185,7 +190,7 @@
                It also gets an id -->
         <input type="text" placeholder="Message..." maxlength="140" id="message">
         <!-- #8 send message requires a button -->
-        <button onclick="sendMessage()" class ="accent"><i class="fas fa-arrow-right"></i></button>
+        <button id="arrow-button" onclick="sendMessage()" class ="accent"><i class="fas fa-arrow-right"></i></button>
     </div>
 </div>
 

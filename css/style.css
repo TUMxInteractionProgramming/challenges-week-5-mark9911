@@ -80,12 +80,15 @@ h1 {
 
     /* MOOCUS image alignment */
     position: relative; /* we need this, so that the image's absolute position is relative to the app bar */
+
+    /*   */
+    display: flex;
 }
 
 h1#left-app-bar {
     padding-left: 72px;  
     z-index: +1;
-    }
+}
 
 h1#left-app-bar img {
     position: absolute;
@@ -262,6 +265,15 @@ li.selected {
     border: none;
     /* alignment */
     flex-grow: 1;
+    padding: 10px;
+}
+
+#chat h1 input {
+    /* styles */
+    font-size: 16px;
+    border: none;
+    /* alignment */
+    flex-grow: 1;
 }
 
 /* MESSAGES */
@@ -328,6 +340,18 @@ li.selected {
     padding: 7px 16px;
     border-radius: 5px;
 }
+
+.primary2 {
+    background-color: #3F51B5;
+    color: white;
+    /* min-width: 64px; */
+    margin: 0px;
+    padding: 3px 16px;
+    border: none;
+    
+}
+
+
 
 .accent {
     background-color: #CDDC39;
